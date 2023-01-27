@@ -1,0 +1,7 @@
+{
+    "number_products_rated": {"count":0,"mean":0,"std":0,"min":0,"25%":0,"50%":0,"75%":0,"max":0},
+    "avg_ratings":{"count":0,"mean":0,"std":0,"min":0,"25%":0,"50%":5,"75%":0,"max":0},
+    "reviewing_since":{"count":0,"mean":0,"std":0,"min":0,"25%":0,"50%":0,"75%":0,"max":0},
+    "helpful_votes":{"count":0,"mean":0,"std":0,"min":0.0,"25%":0,"50%":0,"75%":0,"max":0},
+    "total_votes":{"count":0,"mean":0,"std":0,"min":0,"25%":0,"50%":0,"75%":0,"max":0}
+}
