@@ -1,0 +1,8 @@
+{
+    "q1" : { "products" : { "asin": 0, "salesRank": 0, "imUrl": 0, "categories":0, "title":0, "description":0, "price":0,"related":0,"brand":0}, "reviews": {"asin": 0, "reviewerID": 0, "reviewerName":0, "helpful":0, "reviewText":0, "overall":0, "summary":0, "unixReviewTime": 0, "reviewTime":0}},
+    "q2": 0,
+    "q3": {"mean":0, "std":0, "50%":0, "min":0, "max":0},
+    "q4": {},
+    "q5": 0,
+    "q6": 0
+}
