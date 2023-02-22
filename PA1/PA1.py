@@ -2,8 +2,11 @@ from cProfile import run
 from dask.distributed import Client, LocalCluster
 import time
 import json
+
 import re
 import pandas as pd
+import dask.dataframe as dd
+import dask
 
 def PA1(user_reviews_csv,products_csv):
     start = time.time()
@@ -19,8 +22,8 @@ def PA1(user_reviews_csv,products_csv):
     reviews = dd.read_csv(user_reviews_csv)
 
     # Q1
-    q1_reviews = reviews.isna().mean().compute() * 100
-    q1_products = products.isna().mean().compute() * 100
+    q1_reviews = reviews.isna().mean().compute().round(4) * 100
+    q1_products = products.isna().mean().compute().round(4) * 100
 
 
     # Set up for Q1-Q6
@@ -53,7 +56,7 @@ def PA1(user_reviews_csv,products_csv):
         if isinstance(x, float):
             return x
         else:
-            return re.search("\'.*?\'",x).group().strip("'")
+            return eval(x)[0][0]
 
     numCat = products.assign(categories = lambda x: x.categories.apply(
         get_supercat,
@@ -104,11 +107,11 @@ def PA1(user_reviews_csv,products_csv):
     temp1 = dask.compute(bag1)
     temp1 = temp1[0]  
 
-    q2 = temp1['q2']['price']
-    q3 = temp1['q3'][['mean', 'std', '50%', 'min', 'max']]
-    q4 = temp1['q4'][1:].sort_index(ascending=True, kind="mergesort").sort_values(ascending=False, kind="mergesort")
-    q5 = temp1['q5'] + 0
-    q6 = q6 + 0
+    q2 = float(temp1['q2']['price'].round(2))
+    q3 = temp1['q3'][['mean', 'std', '50%', 'min', 'max']].round(2).astype(float)
+    q4 = temp1['q4'][1:].sort_index(ascending=True, kind="mergesort").sort_values(ascending=False, kind="mergesort").astype(int)
+    q5 = int(temp1['q5'] + 0)
+    q6 = int(q6 + 0)
     
     
     end = time.time()
@@ -118,15 +121,14 @@ def PA1(user_reviews_csv,products_csv):
     with open('OutputSchema_PA1.json','r') as json_file:
         data = json.load(json_file)
         print(data)
-
-        data['q1']['products'] = json.loads(q1_reviews.to_json())
-        data['q1']['reviews'] = json.loads(q1_products.to_json())
+        
+        data['q1']['reviews'] = json.loads(q1_reviews.to_json())
+        data['q1']['products'] = json.loads(q1_products.to_json())
         data['q2'] = q2
         data['q3'] = json.loads(q3.to_json())
         data['q4'] = json.loads(q4.to_json())
         data['q5'] = q5
         data['q6'] = q6
-    
     # print(data)
     with open('results_PA1.json', 'w') as outfile: json.dump(data, outfile)
 
